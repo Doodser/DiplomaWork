@@ -30,6 +30,21 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.2.4.RELEASE</version>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/?serverTimezone=UTC&amp;useSSL=false</url>
+                    <user>root</user>
+                    <password>testtest</password>
+                    <schemas>
+                        <schema>diplomawork</schema>
+                    </schemas>
+                    <locations>
+                        <location>filesystem:src/main/resources/db/migrations</location>
+                    </locations>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
