@@ -20,11 +20,11 @@ public class Post {
     @Column(name = "moderation_status", nullable = false, columnDefinition = "enum")
     private ModerationStatus moderationStatus;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "moderator_id")
     private User moderator;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
