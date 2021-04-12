@@ -1,5 +1,8 @@
 package com.doodser.main.model;
 
+import com.doodser.main.view.Views;
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -8,6 +11,7 @@ import java.sql.Date;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.UserIdName.class)
     private int id;
 
     @Column(name = "is_moderator", nullable = false)
@@ -17,6 +21,7 @@ public class User {
     private Date regTime;
 
     @Column(nullable = false)
+    @JsonView(Views.UserIdName.class)
     private String name;
 
     @Column(nullable = false)
@@ -27,6 +32,7 @@ public class User {
 
     private String code;
 
+    @JsonView(Views.UserIdNamePhoto.class)
     private String photo;
 
     public int getId() {

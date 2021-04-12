@@ -3,7 +3,8 @@ package com.doodser.main.model;
 import com.doodser.main.data.ModerationStatus;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 @Entity
@@ -29,7 +30,7 @@ public class Post {
     private User user;
 
     @Column(nullable = false)
-    private Date time;
+    private Timestamp time;
 
     @Column(nullable = false)
     private String title;
@@ -76,12 +77,27 @@ public class Post {
         this.comments = comments;
     }
 
+    public int countComments() {
+        return comments.size();
+    }
+
     public List<Vote> getVotes() {
         return votes;
     }
 
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
+    }
+
+    public int countVoteByValue(int voteValue) {
+        int count = 0;
+        for (Vote vote : votes) {
+            if (vote.getValue() == voteValue) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     public int getIsActive() {
@@ -116,12 +132,20 @@ public class Post {
         this.user = user;
     }
 
-    public Date getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(Timestamp time) {
         this.time = time;
+    }
+
+    public long getTimestamp() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(1970, Calendar.JANUARY, 1, 0, 0, 0);
+
+        return (this.getTime().getTime() + calendar.getTimeInMillis()) / 1000;
     }
 
     public String getTitle() {
@@ -138,6 +162,10 @@ public class Post {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getAnnounce() {
+        return text.substring(0, text.indexOf(" "));
     }
 
     public int getViewCount() {

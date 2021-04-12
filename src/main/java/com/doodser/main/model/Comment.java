@@ -2,6 +2,7 @@ package com.doodser.main.model;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "post_comments")
@@ -66,6 +67,14 @@ public class Comment {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public long getTimestamp() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(1970, Calendar.JANUARY, 1, 0, 0, 0);
+
+        return (this.getTime().getTime() + calendar.getTimeInMillis()) / 1000;
     }
 
     public String getText() {

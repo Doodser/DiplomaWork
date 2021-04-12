@@ -1,7 +1,7 @@
 package com.doodser.main.model;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Table(name = "captcha_codes")
@@ -18,6 +18,16 @@ public class CaptchaCode {
 
     @Column(name = "secret_code", nullable = false)
     private String secretCode;
+
+    public CaptchaCode() {
+
+    }
+
+    public CaptchaCode(String code, String secretCode) {
+        this.code = code;
+        this.secretCode = secretCode;
+        time = new Date();
+    }
 
     public int getId() {
         return id;
