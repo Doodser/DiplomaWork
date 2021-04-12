@@ -20,7 +20,8 @@ CREATE TABLE `posts` (
                          `title` varchar(255) NOT NULL,
                          `text` text NOT NULL,
                          `view_count` int NOT NULL,
-                         PRIMARY KEY (`id`)
+                         PRIMARY KEY (`id`),
+                         FOREIGN KEY (user_id) REFERENCES users (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `post_votes` (
@@ -29,7 +30,9 @@ CREATE TABLE `post_votes` (
                               `post_id` int NOT NULL,
                               `time` datetime NOT NULL,
                               `value` tinyint NOT NULL,
-                              PRIMARY KEY (`id`)
+                              PRIMARY KEY (`id`),
+                              FOREIGN KEY (user_id) REFERENCES users(id),
+                              FOREIGN KEY (post_id) REFERENCES posts(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `tags` (
@@ -42,7 +45,9 @@ CREATE TABLE `tag2post` (
                             `id` int NOT NULL AUTO_INCREMENT,
                             `post_id` int NOT NULL,
                             `tag_id` int NOT NULL,
-                            PRIMARY KEY (`id`)
+                            PRIMARY KEY (`id`),
+                            FOREIGN KEY (post_id) REFERENCES posts(id),
+                            FOREIGN KEY (tag_id) REFERENCES tags(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `post_comments` (
@@ -52,7 +57,9 @@ CREATE TABLE `post_comments` (
                                  `user_id` int NOT NULL,
                                  `time` datetime NOT NULL,
                                  `text` text NOT NULL,
-                                 PRIMARY KEY (`id`)
+                                 PRIMARY KEY (`id`),
+                                 FOREIGN KEY (post_id) REFERENCES posts(id),
+                                 FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `captcha_codes` (
