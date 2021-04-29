@@ -1,7 +1,6 @@
 package com.doodser.main.service;
 
 import com.doodser.main.api.response.PostsResponse;
-import com.doodser.main.data.ModerationStatus;
 import com.doodser.main.model.Post;
 import com.doodser.main.repository.PostsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
