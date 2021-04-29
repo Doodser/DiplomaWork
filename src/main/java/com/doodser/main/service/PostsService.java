@@ -24,7 +24,7 @@ public class PostsService {
 
         return new PostsResponse(
                 posts.getContent(),
-                postsRepository.countAllByIsActiveAndModerationStatus(1, ModerationStatus.ACCEPTED)
+                posts.getTotalElements()
         );
     }
 
@@ -35,7 +35,7 @@ public class PostsService {
 
         return new PostsResponse(
                 posts.getContent(),
-                postsRepository.countAllActiveAndAcceptedPostsByTitleContaining(query)
+                posts.getTotalElements()
         );
     }
 
@@ -48,7 +48,7 @@ public class PostsService {
 
         return new PostsResponse(
                 posts.getContent(),
-                postsRepository.countAllActiveAndAcceptedPostsByDateBetween(date, datePlusDay)
+                posts.getTotalElements()
         );
     }
 
@@ -59,12 +59,16 @@ public class PostsService {
 
         return new PostsResponse(
                 posts.getContent(),
-                postsRepository.countAllActiveAndAcceptedPostsByTag(tag)
+                posts.getTotalElements()
         );
     }
 
     public PostsResponse.PostObject getPost(int id) {
-        return new PostsResponse.PostObject(postsRepository.findPostById(id));
+        Post post = postsRepository.findPostById(id);
+        post.setViewCount(post.getViewCount() + 1);
+        postsRepository.save(post);
+
+        return new PostsResponse.PostObject(post);
     }
 
     private PageRequest createPageRequest(int offset, int limit) {

@@ -18,14 +18,6 @@ public interface PostsRepository extends JpaRepository<Post, Integer> {
 
     int countAllByIsActiveAndModerationStatus(int isActive, ModerationStatus moderationStatus);
 
-    @Query("select count(p.id) from Post p where p.title like ?1 " +
-            "and p.isActive = 1 and p.moderationStatus = 'ACCEPTED'")
-    int countAllActiveAndAcceptedPostsByTitleContaining(String title);
-
-    @Query("select count(p.id) from Post p where p.time > ?1 and p.time < ?2 " +
-            "and p.isActive = 1 and p.moderationStatus = 'ACCEPTED'")
-    int countAllActiveAndAcceptedPostsByDateBetween(Timestamp date, Timestamp datePlusDay);
-
     @Query(value = "select count(*) from posts p where p.is_active = 1 and p.moderation_status = 'ACCEPTED' " +
             "and (select count(*) from tag2post t2p where" +
             " t2p.tag_id = (select t.id from tags t where t.name = ?1) and t2p.post_id = p.id)" +

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PostsResponse {
     @JsonView(Views.PostsRequestData.class)
-    private int count;
+    private long count;
 
     @JsonView(Views.PostsRequestData.class)
     private List<PostObject> posts = new ArrayList<>();
@@ -19,16 +19,16 @@ public class PostsResponse {
     @JsonView(Views.PostRequestFullData.class)
     private PostObject post;
 
-    public PostsResponse(List<Post> posts, int count) {
+    public PostsResponse(List<Post> posts, long count) {
         posts.forEach(post -> this.posts.add(new PostObject(post)));
         this.count = count;
     }
 
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(long count) {
         this.count = count;
     }
 

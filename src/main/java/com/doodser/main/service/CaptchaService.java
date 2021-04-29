@@ -6,20 +6,21 @@ import com.doodser.main.repository.CaptchaRepository;
 import com.github.cage.Cage;
 import com.github.cage.YCage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@EnableScheduling
 public class CaptchaService {
     @Autowired
     private CaptchaRepository captchaRepository;
     private final Cage cage = new YCage();
 
     public CaptchaResponse getCaptcha() {
-        deleteDeprecatedCodes();
-
         String code = cage.getTokenGenerator().next();
         String secretCode = cage.getTokenGenerator().next();
 
@@ -28,6 +29,7 @@ public class CaptchaService {
         return new CaptchaResponse(secretCode, Base64.getEncoder().encodeToString(code.getBytes()));
     }
 
+    @Scheduled(fixedDelay = 450000)
     private void deleteDeprecatedCodes() {
         Date today = new Date();
         List<CaptchaCode> codes = captchaRepository.findAll();
