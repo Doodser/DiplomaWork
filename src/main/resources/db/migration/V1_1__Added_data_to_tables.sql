@@ -78,6 +78,6 @@ insert into post_comments(parent_id, post_id, user_id, time, text)
            (null, 6, 2, '2020-05-28T22:19:48', 'И зачем мне это?');
 
 insert into global_settings(code, name, value)
-    values ('MULTIUSER_MODE', 'Многопользовательский режим', 'NO'),
+    values ('MULTIUSER_MODE', 'Многопользовательский режим', 'YES'),
            ('POST_PREMODERATION', 'Премодерация постов', 'NO'),
            ('STATISTIC_IS_PUBLIC', 'Показывать всем статистику блога', 'NO');

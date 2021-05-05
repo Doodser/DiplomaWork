@@ -23,7 +23,7 @@ public class RegisterService {
         if (userRepository.getByEmail(email) != null) {
             response.getErrors().put("email", "Этот email уже зарегистрирован");
         }
-        if (name.contains(" ")) {
+        if (name.isBlank()) {
             response.getErrors().put("name", "Имя указано неверно");
         }
         if (password.length() < 6) {

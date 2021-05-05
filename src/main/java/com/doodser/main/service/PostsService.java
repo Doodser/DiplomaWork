@@ -21,10 +21,7 @@ public class PostsService {
     public PostsResponse getPosts(int offset, int limit, String mode) {
         Page<Post> posts = getPageByMode(mode, createPageRequest(offset, limit));
 
-        return new PostsResponse(
-                posts.getContent(),
-                posts.getTotalElements()
-        );
+        return getPostsResponse(posts);
     }
 
     public PostsResponse getPostsByQuery(int offset, int limit, String query) {
@@ -32,10 +29,7 @@ public class PostsService {
                 postsRepository.findAllActiveAndAcceptedPostsByTitleContainingOrderByTimeDesc(
                         query, createPageRequest(offset, limit));
 
-        return new PostsResponse(
-                posts.getContent(),
-                posts.getTotalElements()
-        );
+        return getPostsResponse(posts);
     }
 
     public PostsResponse getPostsByDate(int offset, int limit, Timestamp date) {
@@ -45,10 +39,7 @@ public class PostsService {
                 postsRepository.findAllActiveAndAcceptedPostsByDateOrderByTimeDesc(
                         date, datePlusDay, createPageRequest(offset, limit));
 
-        return new PostsResponse(
-                posts.getContent(),
-                posts.getTotalElements()
-        );
+        return getPostsResponse(posts);
     }
 
     public PostsResponse getPostsByTag(int offset, int limit, String tag) {
@@ -56,24 +47,31 @@ public class PostsService {
                 postsRepository.findAllActiveAndAcceptedPostsByTagOrderByTimeDesc(
                         tag, createPageRequest(offset, limit));
 
+        return getPostsResponse(posts);
+    }
+
+    public PostsResponse.PostObject getPost(int id) {
+        Post post = postsRepository.findPostById(id);
+        incrementViews(post);
+        postsRepository.save(post);
+
+        return new PostsResponse.PostObject(post);
+    }
+
+    private PostsResponse getPostsResponse(Page<Post> posts) {
         return new PostsResponse(
                 posts.getContent(),
                 posts.getTotalElements()
         );
     }
 
-    public PostsResponse.PostObject getPost(int id) {
-        Post post = postsRepository.findPostById(id);
+    private void incrementViews(Post post) {
         post.setViewCount(post.getViewCount() + 1);
-        postsRepository.save(post);
-
-        return new PostsResponse.PostObject(post);
     }
 
     private PageRequest createPageRequest(int offset, int limit) {
-        int amountOfElements = limit - offset;
-        int pageNum = offset / amountOfElements;
-        return PageRequest.of(pageNum, amountOfElements);
+        int pageNum = offset / limit;
+        return PageRequest.of(pageNum, limit);
     }
 
     private Timestamp getDateIncreasedByDay(Timestamp date) {
